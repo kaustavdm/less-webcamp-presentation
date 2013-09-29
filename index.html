@@ -28,6 +28,12 @@
         <!--[if lt IE 9]>
         <script src="lib/js/html5shiv.js"></script>
         <![endif]-->
+
+        <style>
+         h1.normalcase, h2.normalcase, h3.normalcase {
+             text-transform: none;
+         }
+        </style>
     </head>
 
     <body>
@@ -71,8 +77,287 @@
                     <h2>All valid CSS are valid LESS code</h2>
                 </section>
 
-            </div>
+                <section>
+                    <h2>What is interesting about LESS?</h2>
+                    <ul>
+                        <li class="fragment">Variables</li>
+                        <li class="fragment">Mixins</li>
+                        <li class="fragment">Nested Rules</li>
+                        <li class="fragment">Functions &amp; Operations</li>
+                        <li class="fragment">Import other LESS files</li>
+                    </ul>
+                </section>
 
+                <section>
+                    <h2>Install LESS</h2>
+                    <h3 class="normalcase">$ npm install -g less</h3>
+                </section>
+
+                <section>
+                    <h2>Compiling a LESS file to CSS</h2>
+                    <h3 class="normalcase">$ lessc input.less output.css</h3>
+                </section>
+
+                <section>
+                    <h2>Variables</h2>
+                    <p>They make hex codes easier to remember</p>
+                    <pre><code>
+@nice-blue: #5B83AD;
+@light-blue: (@nice-blue + #111);
+
+#header {
+    color: @light-blue;
+}
+
+#footer {
+    color: @nice-blue;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Output</h2>
+                    <pre><code>
+#header {
+    color: #6c94be;
+}
+#footer {
+    color: #5b83ad;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Mixins</h2>
+                    <p>Use entire blocks of CSS as variables</p>
+                    <pre><code>
+.bordered {
+    border-top: dotted 1px black;
+    border-bottom: solid 2px black;
+}
+
+#menu a {
+    color: #111;
+    .bordered;
+}
+.post a {
+    color: red;
+    .bordered;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Output</h2>
+                    <pre><code>
+.bordered {
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+#menu a {
+  color: #111;
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+.post a {
+  color: red;
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Parametric Mixins</h2>
+                    <p>Reuse blocks with parameters</p>
+                    <pre><code>
+.border-radius (@radius: 5px) {
+  border-radius: @radius;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+}
+
+#header {
+  .border-radius;
+}
+.button {
+  .border-radius(10px);
+}
+
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Output</h2>
+                    <pre><code>
+#header {
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+.button {
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Nested Rules</h2>
+                    <p>Rule in rule in rule&hellip;</p>
+                    <pre><code>
+#header {
+    color: black;
+
+    .navigation {
+        font-size: 12px;
+    }
+
+    .logo {
+        width: 300px;
+
+        &:hover { text-decoration: none }
+    }
+}
+
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Output</h2>
+                    <pre><code>
+#header {
+  color: black;
+}
+#header .navigation {
+  font-size: 12px;
+}
+#header .logo {
+  width: 300px;
+}
+#header .logo:hover {
+  text-decoration: none;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Functions</h2>
+                    <p>Easy way of doing tedious things</p>
+                    <pre><code>
+@base: #f04615;
+@width: 0.5;
+
+.class {
+  width: percentage(0.5); // returns `50%`
+  color: saturate(@base, 5%);
+  background-color: spin(lighten(@base, 25%), 8);
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Output</h2>
+                    <pre><code>
+.class {
+  width: 50%;
+  color: #f6430f;
+  background-color: #f8b38d;
+}
+
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Operations</h2>
+                    <p>Now your CSS can do maths!</p>
+                    <pre><code>
+@base: 5%;
+@filler: (@base * 2);
+@other: (@base + @filler);
+
+color: (#888 / 4);
+background-color: (@base-color + #111);
+height: (100% / 2 + @filler);
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Output</h2>
+                    <pre><code>
+color: #222222;
+background-color: #444444;
+height: 60%;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Imports</h2>
+                    <p>Remember a Python script?</p>
+                    <pre><code>
+@import "variables.less";
+@import "mixins.less";
+
+#container {
+    background-color: @nice-blue;
+}
+
+#content {
+    .bordered;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Output</h2>
+                    <pre><code>
+#header {
+  color: #6c94be;
+}
+#footer {
+  color: #5b83ad;
+}
+.bordered {
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+#menu a {
+  color: #111;
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+.post a {
+  color: red;
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+#container {
+  background-color: #5b83ad;
+}
+#content {
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>For the full API see</h3>
+                    <h2 class="normalcase">lesscss.org</h2>
+                </section>
+
+                <section>
+                    <img src="images/minion-bye.jpg">
+                    <h3 class="normalcase">@kaustavdm</h3>
+                    <p>Code samples were taken from lesscss.org</p>
+                    <p>This presentation: <br><a href="https://kaustavdm.github.io/less-webcamp-presentation">kaustavdm.github.io/less-webcamp-presentation</a></p>
+                </section>
+            </div>
+                
         </div>
 
         <script src="lib/js/head.min.js"></script>
